@@ -1,73 +1,80 @@
-"""Regenerate dark_mode.svg / light_mode.svg with live GitHub stats.
-
-Runs daily via GitHub Actions. Stdlib only, no dependencies.
-"""
+import os
 import calendar
 import html
 import json
-import os
 import urllib.request
+import subprocess
 from datetime import date, datetime, timezone
 
-USER = "DietrichGebert"
-BIRTHDAY = date(1989, 1, 15)
-JOINED_YEAR = 2023  # account creation year, never changes
+USER = "bugsNburgers"
+BIRTHDAY = date(2004, 1, 1)
+JOINED_YEAR = 2025  # account creation year
 W = 56  # info column width in characters
 
 ART = r"""
-                 ++==---
-            +==---------:-:::
-          +==------::::::..... .
-        *===----:::::...::::..   :#
-       +==-=========++++++++==:.  .#
-      =--=+*#%%######******++++-:  +
-      -=*#%%%%%%#####*******+++=-:.=
-      =*%%@@@@%%%######******+++=-:-
-      +#%%##*+++*###**+----===+++=--#
-      +#%#+===::-+##*=::::::-==++=--=*
-    %#*#%#*+*+-=+#%%*=---:---=++++==+=   #
-    %#*#%%%%%###%%%%*+++++++***+++=-=+##**
-    @#+#%%%%%%%%%%%#*++++***+++++++==*###
-     %###%%%%#####++=-=+++**+++++++++
-      %%########%%#+++++++**++==+++*
-        ##*###**#**++====++*++++++
-         *##%#**##*++++++++*+++==*
-          *###%%%##******+++++===+
-           **##%%%#*****++====-==
-         #+#*+++++=====------==++.
-         ..%##*+=------:---===++=-.
-     #+   :%%%%#*+=----====+++++=-.
- *+    .  :#%%###*++====++++*+++=-
-       .  :+######****++*****+++=
-          :+**#####************=
-           :+***####***##****+:
-             -+*##########+==.
-               .=*#####*=.
+                                  *
+                                =*@
+              @                %#@*:
+       =+===-=%@             ++#@%:-
+       =:::-=::+%           **%%@@+:.
+       -:.... . .=        %@#*#@%@@==
+      *=:.:----=+++     %@=@@%%%#%%++*
+      +:  .-+++++===  +=*#==*####%@#=+
+      *=:..--:::-====++++:=+=**%%@@@+-+
+      +=---=---=====++**%#=#*#%@@@@@*=-
+     +=--=++====++++****#*=#%%%@##@#==-
+     *+==++==+*##*=:=++=--+*%%%: .@#
+     #++++++===-:.:::     *#%%=  :@*
+   +%%*===-:.. .:-=++.    +%#%:  -*-
+  --*@#+=::.:--==:::--  :+#%@@*#+++-
+  :.=#%#+-:-==++-=-:..--%@#@@@@@@@*:.-+
+ ==-.-#%#+------==-::::+@@%*%@@@@*: .--
+=-==: :+###***++***+++*%%%@*-*@@%:.--::-
+-----..:+*##%%%%%%#####%%%%%*@@*:-*#++=:
+-=----: .:=##%%#%%%%#%%@%###@#: :+++=-::
+--:--===:.-++*##%%##%%%%%%@@@#.  --.....
+======-=-:::-+#****####%%%@@@@=:..--..:.
+--==----:-=::++***#%#%%%%@@@@@+*+--:....
+-==-----------=+**##%%%%@@@@%@=====-:.
+---=----------===+#%%%%@@@@@@@+-----=-:
 """
 
-# two tokens by design: the Actions GITHUB_TOKEN yields the contribution-style
-# commit count (public + private activity), while a PAT (ACCESS_TOKEN secret)
-# sees private repos for the repo list and LOC walk. Either falls back to the other.
-TOKEN = os.environ.get("GITHUB_TOKEN") or os.environ.get("ACCESS_TOKEN") or ""
-PRIV_TOKEN = os.environ.get("ACCESS_TOKEN") or TOKEN
+def get_token():
+    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("ACCESS_TOKEN")
+    if token:
+        return token
+    try:
+        p = subprocess.run(
+            ["git", "credential", "fill"],
+            input="protocol=https\nhost=github.com\n",
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        for line in p.stdout.splitlines():
+            if line.startswith("password="):
+                return line.split("=", 1)[1].strip()
+    except Exception:
+        pass
+    return ""
 
+TOKEN = get_token()
+PRIV_TOKEN = os.environ.get("ACCESS_TOKEN") or TOKEN
 
 def gh(url, payload=None, token=None):
     req = urllib.request.Request(
         url,
         data=json.dumps(payload).encode() if payload else None,
-        headers={"Authorization": f"Bearer {token or TOKEN}", "Accept": "application/vnd.github+json"},
+        headers={"Authorization": f"Bearer {token or TOKEN}", "Accept": "application/vnd.github+json", "User-Agent": "reedmeh"},
     )
     with urllib.request.urlopen(req) as r:
         return r.status, json.loads(r.read() or "{}")
-
 
 def graphql(query, variables=None, token=None):
     _, resp = gh("https://api.github.com/graphql", {"query": query, "variables": variables or {}}, token)
     if resp.get("errors"):
         raise RuntimeError(resp["errors"])
     return resp["data"]
-
 
 def age(b, t):
     years = t.year - b.year - ((t.month, t.day) < (b.month, b.day))
@@ -78,7 +85,6 @@ def age(b, t):
         pm_year, pm = (t.year, t.month - 1) if t.month > 1 else (t.year - 1, 12)
         days = calendar.monthrange(pm_year, pm)[1] - b.day + t.day
     return years, months, days
-
 
 def fetch_stats():
     yr_aliases = "\n".join(
@@ -100,7 +106,7 @@ def fetch_stats():
           totalCount
           nodes {{ name stargazerCount isFork }}
         }}
-        repositoriesContributedTo(first: 1, contributionTypes: [COMMIT, PULL_REQUEST, REPOSITORY]) {{
+        repositoriesContributedTo(first: 100, contributionTypes: [COMMIT, PULL_REQUEST, REPOSITORY]) {{
           totalCount
         }}
       }}
@@ -115,7 +121,6 @@ def fetch_stats():
     stats.update(loc([n["name"] for n in u["repositories"]["nodes"] if not n["isFork"]], u["id"]))
     return stats
 
-
 LOC_QUERY = """
 query($owner: String!, $name: String!, $id: ID!, $cursor: String) {
   repository(owner: $owner, name: $name) {
@@ -128,10 +133,7 @@ query($owner: String!, $name: String!, $id: ID!, $cursor: String) {
   }
 }"""
 
-
 def loc(repo_names, user_id):
-    # ponytail: REST stats/contributors answers 202 forever to the Actions token,
-    # so walk own commits on the default branch via GraphQL instead
     add = rem = 0
     for name in repo_names:
         cursor = None
@@ -139,7 +141,7 @@ def loc(repo_names, user_id):
             while True:
                 ref = graphql(LOC_QUERY, {"owner": USER, "name": name, "id": user_id, "cursor": cursor}, token=PRIV_TOKEN)["repository"]["defaultBranchRef"]
                 if ref is None:
-                    break  # empty repo
+                    break
                 h = ref["target"]["history"]
                 add += sum(n["additions"] for n in h["nodes"])
                 rem += sum(n["deletions"] for n in h["nodes"])
@@ -150,7 +152,6 @@ def loc(repo_names, user_id):
             print(f"loc {name}: {e}")
     return {"loc_add": add, "loc_del": rem, "loc": add - rem}
 
-
 PALETTES = {
     "dark": {"bg": "#0d1117", "border": "#30363d", "art": "#8b949e", "h": "#58a6ff",
              "k": "#ffa657", "v": "#c9d1d9", "d": "#484f58", "g": "#3fb950", "r": "#f85149"},
@@ -158,21 +159,17 @@ PALETTES = {
               "k": "#953800", "v": "#24292f", "d": "#afb8c1", "g": "#1a7f37", "r": "#cf222e"},
 }
 
-
 def kv(key, val, width=W):
     dots = "." * max(width - len(key) - len(str(val)) - 3, 1)
     return [(f"{key}: ", "k"), (dots + " ", "d"), (str(val), "v")]
-
 
 def kv2(k1, v1, k2, v2):
     left = kv(k1, v1, 30)
     return left + [(" | ", "d")] + kv(k2, v2, 23)
 
-
 def rule(title=""):
     label = f"─ {title} " if title else ""
     return [(label, "h"), ("─" * (W - len(label)), "d")]
-
 
 def info_lines(s):
     y, m, d = age(BIRTHDAY, date.today())
@@ -180,19 +177,19 @@ def info_lines(s):
     return [
         [(f"{USER.lower()}@github ", "h"), ("─" * (W - len(USER) - 8), "d")],
         [],
-        kv("OS", "Windows, macOS"),
+        kv("OS", "Windows, Linux"),
         kv("Uptime", f"{y} years, {m} months, {d} days"),
-        kv("Host", "Trimble"),
-        kv("Kernel", "Lead GenAI Engineer"),
-        kv("IDE", "Claude Code, Cursor, VS Code"),
+        kv("Host", "Bengaluru, India"),
+        kv("Kernel", "Software Engineer"),
+        kv("IDE", "Cursor, VS Code"),
         [],
-        kv("Languages.Programming", "Python, Java, C#, TypeScript"),
-        kv("Languages.Real", "German, English, Russian"),
-        kv("Hobbies", "Fishing"),
+        kv("Languages.Programming", "TypeScript, Python, C++, React"),
+        kv("Languages.Real", "English, Kannada, Hindi"),
+        kv("Hobbies", "Building Projects, Open Source"),
         [],
         rule("Contact"),
-        kv("Email", "dietrichgebert@gmail.com"),
-        kv("LinkedIn", "in/dietrich-gebert-b3a314a9"),
+        kv("Email", "prateekyawagal@gmail.com"),
+        kv("LinkedIn", "in/suprateek-yawagal"),
         [],
         rule("GitHub Stats"),
         kv2("Repos", f"{s['repos']} {{Contributed: {s['contributed']}}}", "Stars", n(s["stars"])),
@@ -200,7 +197,6 @@ def info_lines(s):
         [("Lines of Code: ", "k"), (n(s["loc"]), "v"), (" ( ", "d"),
          (n(s["loc_add"]) + "++", "g"), (", ", "d"), (n(s["loc_del"]) + "--", "r"), (" )", "d")],
     ]
-
 
 def render(mode, stats):
     p = PALETTES[mode]
@@ -210,7 +206,7 @@ def render(mode, stats):
         f'<rect x="0.5" y="0.5" width="839" height="499" rx="10" fill="{p["bg"]}" stroke="{p["border"]}"/>',
     ]
     for i, line in enumerate(ART.strip("\n").split("\n")):
-        out.append(f'<text x="25" y="{40 + i * 15}" fill="{p["art"]}" xml:space="preserve">{html.escape(line)}</text>')
+        out.append(f'<text x="25" y="{50 + i * 16}" fill="{p["art"]}" xml:space="preserve">{html.escape(line)}</text>')
     for i, segs in enumerate(info_lines(stats)):
         if not segs:
             continue
@@ -219,13 +215,11 @@ def render(mode, stats):
     out.append("</svg>")
     return "\n".join(out)
 
-
 def selfcheck():
     assert age(date(1989, 1, 15), date(2026, 7, 10)) == (37, 5, 25)
     assert age(date(2000, 3, 31), date(2026, 4, 1)) == (26, 0, 1)
     assert age(date(2000, 1, 1), date(2026, 1, 1)) == (26, 0, 0)
-    assert len("".join(t for t, _ in kv("OS", "Windows, macOS"))) == W
-
+    assert len("".join(t for t, _ in kv("OS", "Windows, Linux"))) == W
 
 if __name__ == "__main__":
     selfcheck()
