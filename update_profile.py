@@ -7,7 +7,7 @@ import subprocess
 from datetime import date, datetime, timezone
 
 USER = "bugsNburgers"
-BIRTHDAY = date(2004, 1, 1)
+BIRTHDAY = date(2004, 11, 1)  # calculated every November
 JOINED_YEAR = 2025  # account creation year
 W = 56  # info column width in characters
 
@@ -79,25 +79,26 @@ def graphql(query, variables=None, token=None):
         raise RuntimeError(resp["errors"])
     return resp["data"]
 
-def age(b, t):
-    years = t.year - b.year - ((t.month, t.day) < (b.month, b.day))
-    months = (t.month - b.month - (t.day < b.day)) % 12
-    if t.day >= b.day:
-        days = t.day - b.day
-    else:
-        pm_year, pm = (t.year, t.month - 1) if t.month > 1 else (t.year - 1, 12)
-        days = calendar.monthrange(pm_year, pm)[1] - b.day + t.day
-    return years, months, days
+def age_years(b, t):
+    return t.year - b.year - ((t.month, t.day) < (b.month, b.day))
 
 def fetch_stats():
     yr_aliases = "\n".join(
-        f'y{y}: contributionsCollection(from: "{y}-01-01T00:00:00Z", to: "{y + 1}-01-01T00:00:00Z")'
-        " { totalCommitContributions restrictedContributionsCount }"
+        f'y{y}: contributionsCollection(from: "{y}-01-01T00:00:00Z", to: "{y + 1}-01-01T00:00:00Z") {{\n'
+        '  contributionCalendar { totalContributions }\n'
+        '  totalCommitContributions\n'
+        '  totalIssueContributions\n'
+        '  totalPullRequestContributions\n'
+        '  totalPullRequestReviewContributions\n'
+        '  restrictedContributionsCount\n'
+        '}'
         for y in range(JOINED_YEAR, datetime.now(timezone.utc).year + 1)
     )
     contrib = graphql(f'query {{ user(login: "{USER}") {{ {yr_aliases} }} }}')["user"]
-    commits = sum(
-        v["totalCommitContributions"] + v["restrictedContributionsCount"]
+    contributions = sum(
+        v["contributionCalendar"]["totalContributions"]
+        if "contributionCalendar" in v and v["contributionCalendar"].get("totalContributions") is not None
+        else (v.get("totalCommitContributions", 0) + v.get("restrictedContributionsCount", 0))
         for v in contrib.values()
     )
     u = graphql(f"""
@@ -119,7 +120,7 @@ def fetch_stats():
         "repos": u["repositories"]["totalCount"],
         "contributed": u["repositoriesContributedTo"]["totalCount"],
         "stars": sum(n["stargazerCount"] for n in u["repositories"]["nodes"]),
-        "commits": commits,
+        "contributions": contributions,
     }
     stats.update(loc([n["name"] for n in u["repositories"]["nodes"] if not n["isFork"]], u["id"]))
     return stats
@@ -175,28 +176,28 @@ def rule(title=""):
     return [(label, "h"), ("─" * (W - len(label)), "d")]
 
 def info_lines(s):
-    y, m, d = age(BIRTHDAY, date.today())
+    y = age_years(BIRTHDAY, date.today())
     n = lambda x: f"{x:,}"
     return [
         [(f"{USER.lower()}@github ", "h"), ("─" * (W - len(USER) - 8), "d")],
         [],
         kv("OS", "Windows, Linux"),
-        kv("Uptime", f"{y} years, {m} months, {d} days"),
+        kv("Uptime", f"{y} years"),
         kv("Host", "Bengaluru, India"),
         kv("Kernel", "Software Engineer"),
         kv("IDE", "Cursor, VS Code"),
         [],
         kv("Languages.Programming", "TypeScript, Python, C++, React"),
         kv("Languages.Real", "English, Kannada, Hindi"),
-        kv("Hobbies", "Building Projects, Open Source"),
+        kv("Hobbies", "Exploring good food like there's no tomorrow"),
         [],
         rule("Contact"),
-        kv("Email", "prateekyawagal@gmail.com"),
+        kv("Email", "hello@suprateekyawagal.in"),
         kv("LinkedIn", "in/suprateek-yawagal"),
         [],
         rule("GitHub Stats"),
         kv2("Repos", f"{s['repos']} {{Contributed: {s['contributed']}}}", "Stars", n(s["stars"])),
-        kv2("Commits", n(s["commits"]), "Followers", n(s["followers"])),
+        kv2("Contributions", n(s["contributions"]), "Followers", n(s["followers"])),
         [("Lines of Code: ", "k"), (n(s["loc"]), "v"), (" ( ", "d"),
          (n(s["loc_add"]) + "++", "g"), (", ", "d"), (n(s["loc_del"]) + "--", "r"), (" )", "d")],
     ]
@@ -219,10 +220,13 @@ def render(mode, stats):
     return "\n".join(out)
 
 def selfcheck():
-    assert age(date(1989, 1, 15), date(2026, 7, 10)) == (37, 5, 25)
-    assert age(date(2000, 3, 31), date(2026, 4, 1)) == (26, 0, 1)
-    assert age(date(2000, 1, 1), date(2026, 1, 1)) == (26, 0, 0)
+    assert age_years(date(2004, 11, 1), date(2026, 10, 19)) == 21
+    assert age_years(date(2004, 11, 1), date(2026, 11, 1)) == 22
     assert len("".join(t for t, _ in kv("OS", "Windows, Linux"))) == W
+    assert len("".join(t for t, _ in kv("Uptime", "21 years"))) == W
+    assert len("".join(t for t, _ in kv("Email", "hello@suprateekyawagal.in"))) == W
+    assert len("".join(t for t, _ in kv("Hobbies", "Exploring good food like there's no tomorrow"))) == W
+    assert len("".join(t for t, _ in kv2("Contributions", "1,467", "Followers", "12"))) == W
 
 if __name__ == "__main__":
     selfcheck()
