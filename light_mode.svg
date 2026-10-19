@@ -1,33 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="840" height="500" viewBox="0 0 840 500" font-family="Consolas, Menlo, monospace" font-size="13px">
 <rect x="0.5" y="0.5" width="839" height="499" rx="10" fill="#ffffff" stroke="#d0d7de"/>
-<text x="25" y="50" fill="#57606a" xml:space="preserve">           ##     +*#%%%%%%#-==  ##%%##@</text>
-<text x="25" y="66" fill="#57606a" xml:space="preserve">          %***##%%@%@%%#%*##:%+-@%***+*%</text>
-<text x="25" y="82" fill="#57606a" xml:space="preserve">          *+***#%%@@%%%*#%##=#-#*++=+%*</text>
-<text x="25" y="98" fill="#57606a" xml:space="preserve">          *+*****%%%%###*##*=**=+%#+%+</text>
-<text x="25" y="114" fill="#57606a" xml:space="preserve">          *=+*++==%##%%@@@*#+***++%%#</text>
-<text x="25" y="130" fill="#57606a" xml:space="preserve">         %#===-----=@+++#%#**#***%*@#</text>
-<text x="25" y="146" fill="#57606a" xml:space="preserve">         %%#--:::::-=+=-@%#%=#%#++%#%#</text>
-<text x="25" y="162" fill="#57606a" xml:space="preserve">        %%##+:---:::++*+=*@*@=@%#%#*#+</text>
-<text x="25" y="178" fill="#57606a" xml:space="preserve">       #@%*+-:.-=*+*+++=+*++@++=%***%%</text>
-<text x="25" y="194" fill="#57606a" xml:space="preserve">      #%%***=-.-=-=-++=+*++++-+=*+#%%@#</text>
-<text x="25" y="210" fill="#57606a" xml:space="preserve">    *%@##***+==+*=-++=++***%%+*#%%%#%@#</text>
-<text x="25" y="226" fill="#57606a" xml:space="preserve">*###%#**+**+==+**=+++*++**#+#+*#%%##%@=</text>
-<text x="25" y="242" fill="#57606a" xml:space="preserve">@@%%%*++*##+++*++**%**+-++*===*#%#+.+%</text>
-<text x="25" y="258" fill="#57606a" xml:space="preserve">%%%%++=+=#%*+**++=*+=::--:..:=*##*..-*</text>
-<text x="25" y="274" fill="#57606a" xml:space="preserve">%%%##*+-=#%#+++-::.:-=++*....-%##-.:+*</text>
-<text x="25" y="290" fill="#57606a" xml:space="preserve">#%%%#*--=+%%*+----=++--:-+..+*#%@***+=</text>
-<text x="25" y="306" fill="#57606a" xml:space="preserve">****===-:=#%#+=-=+=+===----=@%#@@@@%#</text>
-<text x="25" y="322" fill="#57606a" xml:space="preserve">#++*#=+==::###*==-===+=----#@@###%@%=</text>
-<text x="25" y="338" fill="#57606a" xml:space="preserve">+*+*+==++-.-=#%%#######*+*###%@-+@@#-:</text>
-<text x="25" y="354" fill="#57606a" xml:space="preserve">+*+=+=====-::+##%%%%%####*%%#%%*#%=:*</text>
-<text x="25" y="370" fill="#57606a" xml:space="preserve">**==-=--===-::=+#%%%%%###%%#%##@%</text>
-<text x="25" y="386" fill="#57606a" xml:space="preserve">-++====--==++--+**#*#########%@@%</text>
-<text x="25" y="402" fill="#57606a" xml:space="preserve">+=*:++*+++=++=:--+#****#####%%@@@</text>
-<text x="25" y="418" fill="#57606a" xml:space="preserve">====+++++==+=-=+-++**######%%%@@@</text>
-<text x="25" y="434" fill="#57606a" xml:space="preserve">+=+=-=++++====-=+-+=**####%%%@%#%</text>
-<text x="25" y="450" fill="#57606a" xml:space="preserve">+-=--==++++=====---=--*##%#%%%%@@</text>
-<text x="25" y="466" fill="#57606a" xml:space="preserve">=:-:-=#***+=++=++===++*#%%###%%@@%</text>
-<text x="25" y="482" fill="#57606a" xml:space="preserve">-:::=++#*+****+++=++==*##%#*#%%%@@</text>
+<text x="25" y="50" fill="#57606a" xml:space="preserve">                               +</text>
+<text x="25" y="66" fill="#57606a" xml:space="preserve">        **+=+%@              %%%%</text>
+<text x="25" y="82" fill="#57606a" xml:space="preserve">        ==-=--#@          ****#@#</text>
+<text x="25" y="98" fill="#57606a" xml:space="preserve">        ::::-::+#       +%#**%%@@+</text>
+<text x="25" y="114" fill="#57606a" xml:space="preserve">       -:...  ..:      ##%@%#%@%@%</text>
+<text x="25" y="130" fill="#57606a" xml:space="preserve">       =. .-=-=+*+    #*@+%@%%%#%#+</text>
+<text x="25" y="146" fill="#57606a" xml:space="preserve">       -  .-======= ==++*+=+####@@*</text>
+<text x="25" y="162" fill="#57606a" xml:space="preserve">       =:..--::--====++*=-*=*#%@@@%=</text>
+<text x="25" y="178" fill="#57606a" xml:space="preserve">      +=---=---=====+**#%+*##@@@@@%+</text>
+<text x="25" y="194" fill="#57606a" xml:space="preserve">      =--=++===++++++****=*%%%%*#@*-</text>
+<text x="25" y="210" fill="#57606a" xml:space="preserve">     #+==++==+***=--=+-::+*%%#. -@=</text>
+<text x="25" y="226" fill="#57606a" xml:space="preserve">     %*+++==-=--:.::.    =#%%=  =@-</text>
+<text x="25" y="242" fill="#57606a" xml:space="preserve">    #%*===-:....:-=+-    =%##:  =+.</text>
+<text x="25" y="258" fill="#57606a" xml:space="preserve">    +%#*=::.:--=-:::-. .=*%@@**++=:</text>
+<text x="25" y="274" fill="#57606a" xml:space="preserve">   :-*%#+-:-====---..:-*@%%@@@@@@=..=</text>
+<text x="25" y="290" fill="#57606a" xml:space="preserve">  =-::*#*+------==-:::=%@@*%@@@%+: .=-</text>
+<text x="25" y="306" fill="#57606a" xml:space="preserve">  ==:.:+##****++**+==+#%%@#=*@@#::--:-</text>
+<text x="25" y="322" fill="#57606a" xml:space="preserve"> ----..:+*###%%%%#####%%%%%*%@*--+*+=-</text>
+<text x="25" y="338" fill="#57606a" xml:space="preserve"> =----: .-+##%#%%%%##%@%%##@#-.-+*+=-:</text>
+<text x="25" y="354" fill="#57606a" xml:space="preserve"> ::---=-:.-+**##%%##%%%%%%@@#.  -:....</text>
+<text x="25" y="370" fill="#57606a" xml:space="preserve"> ==--=-=-.:--*****####%%%@@@@-. :-:...</text>
+<text x="25" y="386" fill="#57606a" xml:space="preserve">  ==----:--:-+****###%%%@@@@@++=::...</text>
+<text x="25" y="402" fill="#57606a" xml:space="preserve">  =----------==**###%%%@@@@@%++==-:.</text>
+<text x="25" y="418" fill="#57606a" xml:space="preserve">  -------------==*#%%%@@@@@@@=------:</text>
+<text x="25" y="434" fill="#57606a" xml:space="preserve">  ====-------:-==+#%%%%@@@@@@#+=-----</text>
 <text x="390" y="45" xml:space="preserve"><tspan fill="#0969da">bugsnburgers@github </tspan><tspan fill="#afb8c1">────────────────────────────────────</tspan></text>
 <text x="390" y="87" xml:space="preserve"><tspan fill="#953800">OS: </tspan><tspan fill="#afb8c1">..................................... </tspan><tspan fill="#24292f">Windows, Linux</tspan></text>
 <text x="390" y="108" xml:space="preserve"><tspan fill="#953800">Uptime: </tspan><tspan fill="#afb8c1">....................................... </tspan><tspan fill="#24292f">21 years</tspan></text>
