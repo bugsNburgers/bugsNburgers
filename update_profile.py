@@ -5,39 +5,28 @@ import json
 import urllib.request
 import subprocess
 from datetime import date, datetime, timezone
+import cat_data
 
 USER = "bugsNburgers"
 BIRTHDAY = date(2004, 11, 1)  # calculated every November
 JOINED_YEAR = 2025  # account creation year
 W = 56  # info column width in characters
 
-ART = r"""
-                               +
-        **+=+%@              %%%%
-        ==-=--#@          ****#@#
-        ::::-::+#       +%#**%%@@+
-       -:...  ..:      ##%@%#%@%@%
-       =. .-=-=+*+    #*@+%@%%%#%#+
-       -  .-======= ==++*+=+####@@*
-       =:..--::--====++*=-*=*#%@@@%=
-      +=---=---=====+**#%+*##@@@@@%+
-      =--=++===++++++****=*%%%%*#@*-
-     #+==++==+***=--=+-::+*%%#. -@=
-     %*+++==-=--:.::.    =#%%=  =@-
-    #%*===-:....:-=+-    =%##:  =+.
-    +%#*=::.:--=-:::-. .=*%@@**++=:
-   :-*%#+-:-====---..:-*@%%@@@@@@=..=
-  =-::*#*+------==-:::=%@@*%@@@%+: .=-
-  ==:.:+##****++**+==+#%%@#=*@@#::--:-
- ----..:+*###%%%%#####%%%%%*%@*--+*+=-
- =----: .-+##%#%%%%##%@%%##@#-.-+*+=-:
- ::---=-:.-+**##%%##%%%%%%@@#.  -:....
- ==--=-=-.:--*****####%%%@@@@-. :-:...
-  ==----:--:-+****###%%%@@@@@++=::...
-  =----------==**###%%%@@@@@%++==-:.
-  -------------==*#%%%@@@@@@@=------:
-  ====-------:-==+#%%%%@@@@@@#+=-----
-"""
+def render_cat_art(mode):
+    data = cat_data.CAT_COLORED_DARK if mode == "dark" else cat_data.CAT_COLORED_LIGHT
+    lines = ['<g font-size="12px">']
+    for i, spans in enumerate(data):
+        y = int(45 + i * 14.5)
+        spans_html = []
+        for text, color in spans:
+            esc = html.escape(text)
+            if color:
+                spans_html.append(f'<tspan fill="{color}">{esc}</tspan>')
+            else:
+                spans_html.append(esc)
+        lines.append(f'<text x="25" y="{y}" xml:space="preserve">{"".join(spans_html)}</text>')
+    lines.append('</g>')
+    return "\n".join(lines)
 
 def get_token():
     token = os.environ.get("GITHUB_TOKEN") or os.environ.get("ACCESS_TOKEN")
@@ -205,9 +194,8 @@ def render(mode, stats):
         '<svg xmlns="http://www.w3.org/2000/svg" width="840" height="500" viewBox="0 0 840 500" '
         f'font-family="Consolas, Menlo, monospace" font-size="13px">',
         f'<rect x="0.5" y="0.5" width="839" height="499" rx="10" fill="{p["bg"]}" stroke="{p["border"]}"/>',
+        render_cat_art(mode),
     ]
-    for i, line in enumerate(ART.strip("\n").split("\n")):
-        out.append(f'<text x="25" y="{50 + i * 16}" fill="{p["art"]}" xml:space="preserve">{html.escape(line)}</text>')
     for i, segs in enumerate(info_lines(stats)):
         if not segs:
             continue
