@@ -1,30 +1,33 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="840" height="500" viewBox="0 0 840 500" font-family="Consolas, Menlo, monospace" font-size="13px">
 <rect x="0.5" y="0.5" width="839" height="499" rx="10" fill="#0d1117" stroke="#30363d"/>
-<text x="25" y="50" fill="#8b949e" xml:space="preserve">                                  *</text>
-<text x="25" y="66" fill="#8b949e" xml:space="preserve">                                =*@</text>
-<text x="25" y="82" fill="#8b949e" xml:space="preserve">              @                %#@*:</text>
-<text x="25" y="98" fill="#8b949e" xml:space="preserve">       =+===-=%@             ++#@%:-</text>
-<text x="25" y="114" fill="#8b949e" xml:space="preserve">       =:::-=::+%           **%%@@+:.</text>
-<text x="25" y="130" fill="#8b949e" xml:space="preserve">       -:.... . .=        %@#*#@%@@==</text>
-<text x="25" y="146" fill="#8b949e" xml:space="preserve">      *=:.:----=+++     %@=@@%%%#%%++*</text>
-<text x="25" y="162" fill="#8b949e" xml:space="preserve">      +:  .-+++++===  +=*#==*####%@#=+</text>
-<text x="25" y="178" fill="#8b949e" xml:space="preserve">      *=:..--:::-====++++:=+=**%%@@@+-+</text>
-<text x="25" y="194" fill="#8b949e" xml:space="preserve">      +=---=---=====++**%#=#*#%@@@@@*=-</text>
-<text x="25" y="210" fill="#8b949e" xml:space="preserve">     +=--=++====++++****#*=#%%%@##@#==-</text>
-<text x="25" y="226" fill="#8b949e" xml:space="preserve">     *+==++==+*##*=:=++=--+*%%%: .@#</text>
-<text x="25" y="242" fill="#8b949e" xml:space="preserve">     #++++++===-:.:::     *#%%=  :@*</text>
-<text x="25" y="258" fill="#8b949e" xml:space="preserve">   +%%*===-:.. .:-=++.    +%#%:  -*-</text>
-<text x="25" y="274" fill="#8b949e" xml:space="preserve">  --*@#+=::.:--==:::--  :+#%@@*#+++-</text>
-<text x="25" y="290" fill="#8b949e" xml:space="preserve">  :.=#%#+-:-==++-=-:..--%@#@@@@@@@*:.-+</text>
-<text x="25" y="306" fill="#8b949e" xml:space="preserve"> ==-.-#%#+------==-::::+@@%*%@@@@*: .--</text>
-<text x="25" y="322" fill="#8b949e" xml:space="preserve">=-==: :+###***++***+++*%%%@*-*@@%:.--::-</text>
-<text x="25" y="338" fill="#8b949e" xml:space="preserve">-----..:+*##%%%%%%#####%%%%%*@@*:-*#++=:</text>
-<text x="25" y="354" fill="#8b949e" xml:space="preserve">-=----: .:=##%%#%%%%#%%@%###@#: :+++=-::</text>
-<text x="25" y="370" fill="#8b949e" xml:space="preserve">--:--===:.-++*##%%##%%%%%%@@@#.  --.....</text>
-<text x="25" y="386" fill="#8b949e" xml:space="preserve">======-=-:::-+#****####%%%@@@@=:..--..:.</text>
-<text x="25" y="402" fill="#8b949e" xml:space="preserve">--==----:-=::++***#%#%%%%@@@@@+*+--:....</text>
-<text x="25" y="418" fill="#8b949e" xml:space="preserve">-==-----------=+**##%%%%@@@@%@=====-:.</text>
-<text x="25" y="434" fill="#8b949e" xml:space="preserve">---=----------===+#%%%%@@@@@@@+-----=-:</text>
+<text x="25" y="50" fill="#8b949e" xml:space="preserve">           ##     +*#%%%%%%#-==  ##%%##@</text>
+<text x="25" y="66" fill="#8b949e" xml:space="preserve">          %***##%%@%@%%#%*##:%+-@%***+*%</text>
+<text x="25" y="82" fill="#8b949e" xml:space="preserve">          *+***#%%@@%%%*#%##=#-#*++=+%*</text>
+<text x="25" y="98" fill="#8b949e" xml:space="preserve">          *+*****%%%%###*##*=**=+%#+%+</text>
+<text x="25" y="114" fill="#8b949e" xml:space="preserve">          *=+*++==%##%%@@@*#+***++%%#</text>
+<text x="25" y="130" fill="#8b949e" xml:space="preserve">         %#===-----=@+++#%#**#***%*@#</text>
+<text x="25" y="146" fill="#8b949e" xml:space="preserve">         %%#--:::::-=+=-@%#%=#%#++%#%#</text>
+<text x="25" y="162" fill="#8b949e" xml:space="preserve">        %%##+:---:::++*+=*@*@=@%#%#*#+</text>
+<text x="25" y="178" fill="#8b949e" xml:space="preserve">       #@%*+-:.-=*+*+++=+*++@++=%***%%</text>
+<text x="25" y="194" fill="#8b949e" xml:space="preserve">      #%%***=-.-=-=-++=+*++++-+=*+#%%@#</text>
+<text x="25" y="210" fill="#8b949e" xml:space="preserve">    *%@##***+==+*=-++=++***%%+*#%%%#%@#</text>
+<text x="25" y="226" fill="#8b949e" xml:space="preserve">*###%#**+**+==+**=+++*++**#+#+*#%%##%@=</text>
+<text x="25" y="242" fill="#8b949e" xml:space="preserve">@@%%%*++*##+++*++**%**+-++*===*#%#+.+%</text>
+<text x="25" y="258" fill="#8b949e" xml:space="preserve">%%%%++=+=#%*+**++=*+=::--:..:=*##*..-*</text>
+<text x="25" y="274" fill="#8b949e" xml:space="preserve">%%%##*+-=#%#+++-::.:-=++*....-%##-.:+*</text>
+<text x="25" y="290" fill="#8b949e" xml:space="preserve">#%%%#*--=+%%*+----=++--:-+..+*#%@***+=</text>
+<text x="25" y="306" fill="#8b949e" xml:space="preserve">****===-:=#%#+=-=+=+===----=@%#@@@@%#</text>
+<text x="25" y="322" fill="#8b949e" xml:space="preserve">#++*#=+==::###*==-===+=----#@@###%@%=</text>
+<text x="25" y="338" fill="#8b949e" xml:space="preserve">+*+*+==++-.-=#%%#######*+*###%@-+@@#-:</text>
+<text x="25" y="354" fill="#8b949e" xml:space="preserve">+*+=+=====-::+##%%%%%####*%%#%%*#%=:*</text>
+<text x="25" y="370" fill="#8b949e" xml:space="preserve">**==-=--===-::=+#%%%%%###%%#%##@%</text>
+<text x="25" y="386" fill="#8b949e" xml:space="preserve">-++====--==++--+**#*#########%@@%</text>
+<text x="25" y="402" fill="#8b949e" xml:space="preserve">+=*:++*+++=++=:--+#****#####%%@@@</text>
+<text x="25" y="418" fill="#8b949e" xml:space="preserve">====+++++==+=-=+-++**######%%%@@@</text>
+<text x="25" y="434" fill="#8b949e" xml:space="preserve">+=+=-=++++====-=+-+=**####%%%@%#%</text>
+<text x="25" y="450" fill="#8b949e" xml:space="preserve">+-=--==++++=====---=--*##%#%%%%@@</text>
+<text x="25" y="466" fill="#8b949e" xml:space="preserve">=:-:-=#***+=++=++===++*#%%###%%@@%</text>
+<text x="25" y="482" fill="#8b949e" xml:space="preserve">-:::=++#*+****+++=++==*##%#*#%%%@@</text>
 <text x="390" y="45" xml:space="preserve"><tspan fill="#58a6ff">bugsnburgers@github </tspan><tspan fill="#484f58">────────────────────────────────────</tspan></text>
 <text x="390" y="87" xml:space="preserve"><tspan fill="#ffa657">OS: </tspan><tspan fill="#484f58">..................................... </tspan><tspan fill="#c9d1d9">Windows, Linux</tspan></text>
 <text x="390" y="108" xml:space="preserve"><tspan fill="#ffa657">Uptime: </tspan><tspan fill="#484f58">.................... </tspan><tspan fill="#c9d1d9">22 years, 9 months, 18 days</tspan></text>
