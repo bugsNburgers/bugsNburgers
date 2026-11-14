@@ -173,7 +173,7 @@ def info_lines(s):
         kv("Kernel", "Software Engineer"),
         kv("IDE", "Cursor, VS Code"),
         [],
-        kv("Languages.Programming", "TypeScript, Python, C++, React"),
+        kv("Languages.Programming", "TypeScript, C++"),
         kv("Languages.Real", "English, Kannada, Hindi"),
         kv("Hobbies", "Exploring good food like there's no tomorrow"),
         [],
@@ -210,6 +210,7 @@ def selfcheck():
     assert len("".join(t for t, _ in kv("OS", "Windows, Linux"))) == W
     assert len("".join(t for t, _ in kv("Uptime", "21 years"))) == W
     assert len("".join(t for t, _ in kv("Email", "hello@suprateekyawagal.in"))) == W
+    assert len("".join(t for t, _ in kv("Languages.Programming", "TypeScript, C++"))) == W
     assert len("".join(t for t, _ in kv("Hobbies", "Exploring good food like there's no tomorrow"))) == W
     assert len("".join(t for t, _ in kv2("Contributions", "1,467", "Followers", "12"))) == W
 
