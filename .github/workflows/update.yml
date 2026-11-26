@@ -7,6 +7,11 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
+
+concurrency:
+  group: profile-stats
+  cancel-in-progress: false
 
 jobs:
   update:
@@ -14,6 +19,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -26,12 +33,21 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: Commit & push if changed
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dark_mode.svg light_mode.svg
-          git diff --staged --quiet && echo "No changes, skipping commit." || (
-            git commit -m "chore: refresh profile stats [skip ci]" &&
-            git push
-          )
+      - name: Open or update stats pull request
+        uses: peter-evans/create-pull-request@v8.1.3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: automated/profile-stats
+          base: main
+          delete-branch: true
+          add-paths: |
+            dark_mode.svg
+            light_mode.svg
+          commit-message: "chore: refresh profile stats"
+          title: "chore: refresh profile stats"
+          body: |
+            Refresh the profile's LOC, contributions, repositories, stars, followers,
+            and last-checked timestamp from GitHub.
+
+            Review and merge this PR to publish the refreshed stats on the profile.
+            The updater runs every three days and updates this PR if it is still open.
