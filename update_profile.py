@@ -15,6 +15,8 @@ W = 56  # info column width in characters
 def render_pfp_art(mode):
     data = json.loads(Path(__file__).with_name("pfp_data.json").read_text(encoding="utf-8"))
     lines = ['<g font-size="8px" aria-label="ASCII portrait from my profile picture">']
+    if mode == "light":
+        lines.append('<rect x="17" y="64" width="361.6" height="361.6" rx="8" fill="#0d1117"/>')
     for i, spans in enumerate(data):
         y = 78 + i * 9.6
         spans_html = []
@@ -22,10 +24,7 @@ def render_pfp_art(mode):
             esc = html.escape(text)
             if color:
                 rgb = [int(color[j:j + 2], 16) for j in (1, 3, 5)]
-                if mode == "dark":
-                    rgb = [min(255, round(c * 1.1 + 12)) for c in rgb]
-                else:
-                    rgb = [round(c * 0.72) for c in rgb]
+                rgb = [min(255, round(c * 1.1 + 12)) for c in rgb]
                 color = "#" + "".join(f"{c:02x}" for c in rgb)
                 spans_html.append(f'<tspan fill="{color}">{esc}</tspan>')
             else:
@@ -115,6 +114,7 @@ def fetch_stats():
         "contributions": contributions,
     }
     stats.update(loc([n["name"] for n in u["repositories"]["nodes"] if not n["isFork"]], u["id"]))
+    stats["updated_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     return stats
 
 LOC_QUERY = """
@@ -145,7 +145,7 @@ def loc(repo_names, user_id):
                     break
                 cursor = h["pageInfo"]["endCursor"]
         except Exception as e:
-            print(f"loc {name}: {e}")
+            raise RuntimeError(f"Could not calculate LOC for {USER}/{name}") from e
     return {"loc_add": add, "loc_del": rem, "loc": add - rem}
 
 PALETTES = {
@@ -207,6 +207,10 @@ def render(mode, stats):
             continue
         spans = "".join(f'<tspan fill="{p[c]}">{html.escape(t)}</tspan>' for t, c in segs)
         out.append(f'<text x="390" y="{45 + i * 21}" xml:space="preserve">{spans}</text>')
+    out.append(
+        f'<text x="390" y="477" font-size="10px" fill="{p["art"]}">'
+        f'Updated: {html.escape(stats["updated_at"])}</text>'
+    )
     out.append("</svg>")
     return "\n".join(out)
 
