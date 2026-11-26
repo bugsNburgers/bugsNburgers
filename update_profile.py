@@ -4,27 +4,33 @@ import html
 import json
 import urllib.request
 import subprocess
+from pathlib import Path
 from datetime import date, datetime, timezone
-import cat_data
 
 USER = "bugsNburgers"
 BIRTHDAY = date(2004, 11, 1)  # calculated every November
 JOINED_YEAR = 2025  # account creation year
 W = 56  # info column width in characters
 
-def render_cat_art(mode):
-    data = cat_data.CAT_COLORED_DARK if mode == "dark" else cat_data.CAT_COLORED_LIGHT
-    lines = ['<g font-size="12px">']
+def render_pfp_art(mode):
+    data = json.loads(Path(__file__).with_name("pfp_data.json").read_text(encoding="utf-8"))
+    lines = ['<g font-size="8px" aria-label="ASCII portrait from my profile picture">']
     for i, spans in enumerate(data):
-        y = int(45 + i * 14.5)
+        y = 78 + i * 9.6
         spans_html = []
         for text, color in spans:
             esc = html.escape(text)
             if color:
+                rgb = [int(color[j:j + 2], 16) for j in (1, 3, 5)]
+                if mode == "dark":
+                    rgb = [min(255, round(c * 1.1 + 12)) for c in rgb]
+                else:
+                    rgb = [round(c * 0.72) for c in rgb]
+                color = "#" + "".join(f"{c:02x}" for c in rgb)
                 spans_html.append(f'<tspan fill="{color}">{esc}</tspan>')
             else:
                 spans_html.append(esc)
-        lines.append(f'<text x="25" y="{y}" xml:space="preserve">{"".join(spans_html)}</text>')
+        lines.append(f'<text x="25" y="{y:.1f}" textLength="345.6" lengthAdjust="spacingAndGlyphs" xml:space="preserve">{"".join(spans_html)}</text>')
     lines.append('</g>')
     return "\n".join(lines)
 
@@ -194,7 +200,7 @@ def render(mode, stats):
         '<svg xmlns="http://www.w3.org/2000/svg" width="840" height="500" viewBox="0 0 840 500" '
         f'font-family="Consolas, Menlo, monospace" font-size="13px">',
         f'<rect x="0.5" y="0.5" width="839" height="499" rx="10" fill="{p["bg"]}" stroke="{p["border"]}"/>',
-        render_cat_art(mode),
+        render_pfp_art(mode),
     ]
     for i, segs in enumerate(info_lines(stats)):
         if not segs:
